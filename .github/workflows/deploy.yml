@@ -28,7 +28,7 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: us-east-2
+        AWS_REGION: 'us-east-2'
         APPLICATION_NAME: 'zed-facilitator' # Your Elastic Beanstalk application name
         ENVIRONMENT_NAME: 'zed-facilitator' # Your Elastic Beanstalk environment name
       run: |
