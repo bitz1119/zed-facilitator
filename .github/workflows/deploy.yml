@@ -35,6 +35,6 @@ jobs:
         # Install the AWS CLI
         pip install awscli
         # Deploy the zip file to Elastic Beanstalk
-        aws s3 cp deploy.zip s3://$APPLICATION_NAME/$GITHUB_SHA.zip --region us-east-1
-        aws elasticbeanstalk create-application-version --application-name $APPLICATION_NAME --version-label $GITHUB_SHA --source-bundle S3Bucket=$APPLICATION_NAME,S3Key=$GITHUB_SHA.zip --region us-east-1
-        aws elasticbeanstalk update-environment --environment-name $ENVIRONMENT_NAME --version-label $GITHUB_SHA --region us-east-1
+        aws s3 cp deploy.zip s3://$APPLICATION_NAME/$GITHUB_SHA.zip --region us-east-2
+        aws elasticbeanstalk create-application-version --application-name $APPLICATION_NAME --version-label $GITHUB_SHA --source-bundle S3Bucket=$APPLICATION_NAME,S3Key=$GITHUB_SHA.zip --region us-east-2
+        aws elasticbeanstalk update-environment --environment-name $ENVIRONMENT_NAME --version-label $GITHUB_SHA --region us-east-2
