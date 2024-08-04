@@ -35,7 +35,7 @@ jobs:
         # Install the AWS CLI
         pip install awscli
         # Deploy the zip file to Elastic Beanstalk
-      # Install the AWS CLI
+        # Install the AWS CLI
         pip install awscli
         # Create S3 bucket if it doesn't exist
         if ! aws s3api head-bucket --bucket $S3_BUCKET --region $AWS_REGION 2>/dev/null; then
