@@ -28,13 +28,21 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
+        AWS_REGION: us-east-2
         APPLICATION_NAME: 'zed-facilitator' # Your Elastic Beanstalk application name
         ENVIRONMENT_NAME: 'zed-facilitator' # Your Elastic Beanstalk environment name
       run: |
         # Install the AWS CLI
         pip install awscli
         # Deploy the zip file to Elastic Beanstalk
-        aws s3 cp deploy.zip s3://$APPLICATION_NAME/$GITHUB_SHA.zip --region us-east-2
-        aws elasticbeanstalk create-application-version --application-name $APPLICATION_NAME --version-label $GITHUB_SHA --source-bundle S3Bucket=$APPLICATION_NAME,S3Key=$GITHUB_SHA.zip --region us-east-2
-        aws elasticbeanstalk update-environment --environment-name $ENVIRONMENT_NAME --version-label $GITHUB_SHA --region us-east-2
+      # Install the AWS CLI
+        pip install awscli
+        # Create S3 bucket if it doesn't exist
+        if ! aws s3api head-bucket --bucket $S3_BUCKET --region $AWS_REGION 2>/dev/null; then
+          aws s3api create-bucket --bucket $S3_BUCKET --region $AWS_REGION --create-bucket-configuration LocationConstraint=$AWS_REGION
+        fi
+        # Upload the zip file to S3
+        aws s3 cp deploy.zip s3://$S3_BUCKET/$GITHUB_SHA.zip --region $AWS_REGION
+        # Deploy the zip file to Elastic Beanstalk
+        aws elasticbeanstalk create-application-version --application-name $APPLICATION_NAME --version-label $GITHUB_SHA --source-bundle S3Bucket=$S3_BUCKET,S3Key=$GITHUB_SHA.zip --region $AWS_REGION
+        aws elasticbeanstalk update-environment --environment-name $ENVIRONMENT_NAME --version-label $GITHUB_SHA --region $AWS_REGION
