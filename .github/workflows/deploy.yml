@@ -39,6 +39,10 @@ jobs:
         pip3 install awscli --upgrade --user
         export PATH=$PATH:$HOME/.local/bin
 
+        aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+        aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+        aws configure set region $AWS_REGION
+
         # Upload the zip file to S3
         aws s3 cp deploy.zip s3://$S3_BUCKET/deploy.zip --region $AWS_REGION
 
@@ -47,3 +51,5 @@ jobs:
 
         # Update the environment to use the new application version
         aws elasticbeanstalk update-environment --environment-name $ENVIRONMENT_NAME --version-label $GITHUB_SHA --region $AWS_REGION
+
+
