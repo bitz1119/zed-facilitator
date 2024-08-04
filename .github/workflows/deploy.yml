@@ -38,7 +38,7 @@ jobs:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         application_name: zed-facilitator # Your Elastic Beanstalk application name
-        environment_name: zed-facilitator-env # Your Elastic Beanstalk environment name
+        environment_name: Zed-facilitator-env-1 # Your Elastic Beanstalk environment name
         version_label: ${{ github.sha }}
         use_existing_version_if_available: true
         region: us-east-2
