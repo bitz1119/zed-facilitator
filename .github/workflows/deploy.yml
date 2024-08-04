@@ -24,32 +24,26 @@ jobs:
     - name: Zip codebase
       run: zip -r deploy.zip .
 
-    - name: Deploy to Elastic Beanstalk
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: 'us-east-2'
-        APPLICATION_NAME: 'zed-facilitator' # Your Elastic Beanstalk application name
-        ENVIRONMENT_NAME: 'zed-facilitator' # Your Elastic Beanstalk environment name
-        S3_BUCKET: 'zed-application' # Your S3 bucket name
-      run: |
-        # Install the AWS CLI
-        sudo apt-get update
-        sudo apt-get install -y python3-pip
-        pip3 install awscli --upgrade --user
-        export PATH=$PATH:$HOME/.local/bin
+    - name: Deploy to AWS Elastic BeanTalk
+    uses: einaregilsson/beanstalk-deploy@v20
+    with:
+    aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    application_name: admin-client
+    environment_name: Adminclient-env
+    version_label: ${{ env.PIPELINE_ID }}
+    use_existing_version_if_available: true
+    region: ${{ env.AWS_REGION }}
+    deployment_package: deploy.zip
 
-        aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-        aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-        aws configure set region $AWS_REGION
-
-        # Upload the zip file to S3
-        aws s3 cp deploy.zip s3://$S3_BUCKET/deploy.zip --region $AWS_REGION
-
-        # Create a new application version
-        aws elasticbeanstalk create-application-version --application-name $APPLICATION_NAME --version-label $GITHUB_SHA --source-bundle S3Bucket=$S3_BUCKET,S3Key=deploy.zip --region $AWS_REGION
-
-        # Update the environment to use the new application version
-        aws elasticbeanstalk update-environment --environment-name $ENVIRONMENT_NAME --version-label $GITHUB_SHA --region $AWS_REGION
-
-
+    - name: Deploy to AWS Elastic Beanstalk
+      uses: einaregilsson/beanstalk-deploy@v20
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: zed-facilitator # Your Elastic Beanstalk application name
+        environment_name: zed-facilitator-env # Your Elastic Beanstalk environment name
+        version_label: ${{ github.sha }}
+        use_existing_version_if_available: true
+        region: us-east-2
+        deployment_package: deploy.zip
