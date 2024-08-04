@@ -18,7 +18,7 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-app.get('/',authenticate,(req, res) => {
+app.get('/',(req, res) => {
     res.send("Welcome to Zed Facilitator");
 });
 

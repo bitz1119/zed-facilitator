@@ -5,9 +5,9 @@ const User = require('../models/User');
 const router = express.Router();
 
 router.post('/signup', async (req, res) => {
-    const { email, phoneNumber, password } = req.body;
     try {
         // add checks for mobile number and email
+        const { email, phoneNumber, password } = req.body;
         if (await User.findOne({ email })) return res.status(400).send('Email already exists');
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = new User({ email, phoneNumber, password: hashedPassword });
