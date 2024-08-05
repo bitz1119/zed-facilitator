@@ -14,18 +14,25 @@ router.post('/personaldetails', authenticate, async (req, res) => {
       firstName,
       middleName,
       lastName,
-      dateOfBirth,
-      fatherMotherName,
+      dob,
+      parentName,
       state,
       district,
       pincode,
       city,
-      spokenLanguage,
-      writtenLanguage,
-      educationalQualifications,
-      workExperience,
-      idProofDetails,
-      qualification
+      address,
+      spokenPrimary,
+      writtenPrimary,
+      year,
+      institution,
+      qualification,
+      documentType,
+      documentNumber,
+      documentName,
+          organizationName,
+          roles,
+          duration,
+          designation ,
   } = req.body;
 
   // if (!firstName || !lastName  || !dateOfBirth || !state || !district || !pincode || !city || !spokenLanguage || !writtenLanguage || !qualification) {
@@ -40,58 +47,30 @@ router.post('/personaldetails', authenticate, async (req, res) => {
           return res.status(404).send('User not found');
       }
 
-      // Additional validation checks
-      // if (!/^\d{10}$/.test(mobileNumber)) {
-      //     return res.status(400).send('Invalid mobile number');
-      // }
-
-      // if (!/^\d{6}$/.test(pincode)) {
-      //     return res.status(400).send('Invalid pincode');
-      // }
-      // console.log(educationalQualifications);
-      // Parse JSON fields
-      // let parsedEducationalQualifications, parsedWorkExperience, parsedIdProofDetails;
-      // try {
-      //     parsedEducationalQualifications = JSON.parse(educationalQualifications);
-      //     parsedWorkExperience = JSON.parse(workExperience);
-      //     parsedIdProofDetails = JSON.parse(idProofDetails);
-      //     console.log("working");
-      // } catch (err) {
-      //     return res.status(400).send('Invalid JSON format for educationalQualifications, workExperience, or idProofDetails');
-      // }
-
-      // Validate parsed fields
-      // if (!Array.isArray(educationalQualifications) || !educationalQualifications.length) {
-      //     return res.status(400).send('Invalid educational qualifications');
-      // }
-
-      // if (!Array.isArray(workExperience) || !workExperience.length) {
-      //     return res.status(400).send('Invalid work experience');
-      // }
-
-      // if (!idProofDetails || !idProofDetails.documentType || !idProofDetails.documentNumber || !idProofDetails.nameAsPerDocument) {
-      //     return res.status(400).send('Invalid ID proof details');
-      // }
-
+      
       // Update user details
-      user.details = {
-          firstName,
-          middleName,
-          lastName,
-          dateOfBirth,
-          fatherMotherName,
-          state,
-          HouseNo : req.body.address,
-          district,
-          pincode,
-          city,
-          spokenLanguage,
-          writtenLanguage,
-          educationalQualifications: educationalQualifications,
-          workExperience: workExperience,
-          idProofDetails: idProofDetails,
-          qualification
-      };
+      user.firstName = firstName || user.firstName;
+      user.middleName = middleName || user.middleName;
+      user.lastName = lastName || user.lastName;
+      user.dob = dob || user.dob;
+      user.parentName = parentName || user.parentName;
+      user.state = state || user.state;
+      user.district = district || user.district;
+      user.pincode = pincode || user.pincode;
+      user.city = city || user.city;
+      user.address = address || user.address;
+      user.spokenPrimary = spokenPrimary || user.spokenPrimary;
+      user.writtenPrimary = writtenPrimary || user.writtenPrimary;
+      user.year = year || user.year;
+      user.institution = institution || user.institution;
+      user.qualification = qualification || user.qualification;
+      user.documentType = documentType || user.documentType;
+      user.documentNumber = documentNumber || user.documentNumber;
+      user.documentName = documentName || user.documentName;
+      user.organizationName = organizationName || user.organizationName;
+      user.roles = roles || user.roles;
+      user.duration = duration || user.duration;
+      user.designation = designation || user.designation;
       user.step = 2;
       await user.save();
 

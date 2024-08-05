@@ -12,32 +12,32 @@ const userSchema = new mongoose.Schema({
     firstName: { type: String, required: false },
     middleName: { type: String, required: false }, // Middle name is optional
     lastName: { type: String, required: false },
-    dateOfBirth: { type: Date, required: false },
-    fatherMotherName: { type: String, required: false },
+    dob: { type: Date, required: false },
+    parentName: { type: String, required: false },
     state: { type: String, required: false },
     district: { type: String, required: false },
     pincode: { type: String, required: false },
     city: { type: String, required: false },
-    spokenLanguage: { type: String, required: false },
-    writtenLanguage: { type: String, required: false },
-    HouseNo : {type: String, required: false },
-    educationalQualifications: [{
+    spokenPrimary: { type: String, required: false },
+    writtenPrimary: { type: String, required: false },
+    address : {type: String, required: false },
+    // educationalQualifications: [{
         year: { type: String, required: false },
         institution: { type: String, required: false },
-        qualification: { type: String, required: false }
-    }],
-    idProofDetails: {
+        qualification: { type: String, required: false },
+    // }],
+    // idProofDetails: {
         documentType: { type: String, required: false },
         documentNumber: { type: String, required: false },
-        nameAsPerDocument: { type: String, required: false }
-    },
-    workExperience: [{
-        typeOfExperience: { type: String, required: false },
-        trainingCertificationName: { type: String, required: false },
+        documentName: { type: String, required: false },
+    // },
+    // workExperience: [{
+        
+        designation: { type: String, required: false },
         organizationName: { type: String, required: false },
-        rolesResponsibilities: { type: String, required: false },
-        duration: { type: String, required: false }
-    }],
+        roles: { type: String, required: false },
+        duration: { type: String, required: false },
+    // }],
     details: {
         document: {
             name: {type: String},
