@@ -36,6 +36,9 @@ app.use('/api/auth', authRoutes);
 const detailsRoutes = require('./routes/details');
 app.use('/api/details',authenticate, detailsRoutes);
 
+const personalDetails = require('./routes/personalDetails');
+app.use('/api/user',authenticate,personalDetails)
+
 
 // const trainingRoutes = require('./routes/training');
 // app.use('/api/training', trainingRoutes);
