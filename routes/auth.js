@@ -33,7 +33,7 @@ router.post("/login", async (req, res) => {
     res.cookie("AccessToken", token, {
       maxAge: 1000 * 60 * 15, // would expire after 15 minutes
       httpOnly: true, // The cookie only accessible by the web server
-      signed: true, // Indicates if the cookie should be signed
+    //   signed: true, // Indicates if the cookie should be signed
     });
     res.json({ token });
   } catch (err) {
