@@ -1,20 +1,18 @@
 const express = require('express');
-const router = express.Router();
-const fs = require('fs');
-const multer = require('multer');
-const AWS = require('aws-sdk');
+
 const User = require('../models/User'); // Adjust the path as necessary
-const authenticate = require('../middleware/authenticate'); // Adjust the path as necessary
+const router = express.Router();
 
 
-router.post('/d', async (req, res) => {
+router.get('/user', async (req, res) => {
   
-  const user = await User.findById(req.user.id);
+  const user = await User.findById(req.user.id).select("-password -details");
 
   if (!user) {
       return res.status(404).send('User not found');
   }
-  return res.send(user);
+  return res.status(200).json(user);
 }
 )
+module.exports=router;
 

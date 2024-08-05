@@ -50,9 +50,10 @@ app.use('/api/user',authenticate,personalDetails)
 // app.use('/api/training', trainingRoutes);
 
 
-// const mocktestRoutes = require('./routes/mocktest');
-// app.use('/api/mocktest', mocktestRoutes);
-
+// const getUserInfo = require('./routes/getUserInfo');
+// app.use('/api/info',authenticate,getUserInfo);
+const getUserInfo = require('./routes/getUserInfo');
+app.use('/api/info', authenticate, getUserInfo);
 
 const certificateRoutes = require('./routes/certificate');
 const logger = require('./utils/logger');
