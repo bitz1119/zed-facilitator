@@ -23,7 +23,7 @@ router.post('/personaldetails', authenticate, async (req, res) => {
       address,
       spokenPrimary,
       writtenPrimary,
-      year,
+      qualificationYear ,
       institution,
       qualification,
       documentType,
@@ -61,7 +61,7 @@ router.post('/personaldetails', authenticate, async (req, res) => {
       user.address = address || user.address;
       user.spokenPrimary = spokenPrimary || user.spokenPrimary;
       user.writtenPrimary = writtenPrimary || user.writtenPrimary;
-      user.year = year || user.year;
+      user.year = qualificationYear || user.year;
       user.institution = institution || user.institution;
       user.qualification = qualification || user.qualification;
       user.documentType = documentType || user.documentType;
@@ -70,7 +70,7 @@ router.post('/personaldetails', authenticate, async (req, res) => {
       user.organizationName = organizationName || user.organizationName;
       user.roles = roles || user.roles;
       user.duration = duration || user.duration;
-      user.designation = designation || user.designation;
+      user.designation = designation || user.designation;x
       user.step = 2;
       await user.save();
 

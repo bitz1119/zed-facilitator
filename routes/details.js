@@ -1,65 +1,80 @@
 const express = require('express');
-const User = require('../models/User');
 const router = express.Router();
-const authenticate = require('../middleware/authenticate');
-const multer = require('multer');
 const fs = require('fs');
-const s3 = require('../utils/s3Client');
-const logger = require('../utils/logger');
+const multer = require('multer');
+const AWS = require('aws-sdk');
+const User = require('../models/User'); // Adjust the path as necessary
+const authenticate = require('../middleware/authenticate'); // Adjust the path as necessary
 
-// Set up multer for file uploads
+// Multer setup
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, 'uploads/');
+//     },
+//     filename: function (req, file, cb) {
+//         cb(null, file.originalname);
+//     }
+// });
+
+// const upload = multer({ storage: storage });
 const upload = multer({ dest: 'uploads/' });
 
-router.post('/details', authenticate, upload.single('document'), async (req, res) => {
-    const { name, fathersName, qualification } = req.body;
-    const document = req.file;
-    const user = await User.findById(req.user.id);
+// AWS S3 setup
+const s3 = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+});
 
-    if (!document) {
-        return res.status(400).send('Document file is required');
-    }
+router.post('/details', authenticate, upload.fields([{ name: 'photo' }, { name: 'idproof' }, { name: 'workExp' }, { name: 'marksheet' }]), async (req, res) => {
+    const files = req.files;
+    const user = await User.findById(req.user.id);
 
     if (!user) {
         return res.status(404).send('User not found');
     }
 
     try {
-        // Read file content
-        const fileContent = fs.readFileSync(document.path);
+        const details = [];
 
-        // Setting up S3 upload parameters
-        const params = {
-            Bucket: process.env.S3_BUCKET,
-            Key: `${user.email}_${user._id}/documents/${document.filename}`, // File name you want to save as in S3
-            Body: fileContent
-        };
-        // Uploading files to the bucket
-        const data = await s3.upload(params).promise();
+        for (let key in files) {
+            if (files[key] && files[key][0]) {
+                const document = files[key][0];
 
-        // Delete the file from the local system
-        fs.unlinkSync(document.path);
+                // Read file content
+                const fileContent = fs.readFileSync(document.path);
 
-        user.details = {
-            name,
-            fathersName,
-            qualification,
-            document: {
-                name: document.originalname,
-                s3Url: data.Location
+                // Setting up S3 upload parameters
+                const params = {
+                    Bucket: process.env.S3_BUCKET,
+                    Key: `${user.email}_${user._id}/documents/${document.filename}`, // File name you want to save as in S3
+                    Body: fileContent
+                };
+
+                // Uploading files to the bucket
+                const data = await s3.upload(params).promise();
+                // console.log(data);  
+
+                // Delete the file from the local system
+                fs.unlinkSync(document.path);
+
+                details.push({
+                    name: document.originalname,
+                    s3Url: data.Location
+                });
+                
             }
-        };
-        user.step = 2;
+        }
+        console.log(details);
+        // Update user details
+        user.details=details;
+        user.step = 3;
         await user.save();
 
         res.status(200).send('Details updated');
     } catch (err) {
-        logger.error('An error occurred', err);
-        res.status(400).send(err.message);
+        console.error('An error occurred', err);
+        res.status(500).send('Server error');
     }
 });
 
 module.exports = router;
-
-
-
-//TBD : complete profile needed here
