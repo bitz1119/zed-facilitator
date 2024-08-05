@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-// const authenticate = require('../middleware/authenticate');
 const dotenv = require('dotenv');
 const authenticate = require('./middleware/authenticate');
 
@@ -14,8 +13,8 @@ const MONGO_URI = process.env.MONGO_URI;
 console.log(MONGO_URI);
 
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.error(err));
+    .then(() => logger.info('MongoDB connected'))
+    .catch(err => logger.error(err));
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
@@ -40,6 +39,7 @@ app.use('/api/details',authenticate, detailsRoutes);
 
 
 const certificateRoutes = require('./routes/certificate');
+const logger = require('./utils/logger');
 app.use('/api/certificate', certificateRoutes);
 
 

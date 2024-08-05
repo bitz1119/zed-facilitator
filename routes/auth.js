@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const router = express.Router();
+const logger = require('../utils/logger');
 
 router.post('/signup', async (req, res) => {
     try {
@@ -25,9 +26,10 @@ router.post('/login', async (req, res) => {
         if (!user) return res.status(404).send('User not found');
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).send('Invalid credentials');
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '10h' });
         res.json({ token });
     } catch (err) {
+        logger.error(err)
         res.status(400).send(err.message);
     }
 });
