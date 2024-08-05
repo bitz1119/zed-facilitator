@@ -35,9 +35,7 @@ router.post('/personaldetails', authenticate, async (req, res) => {
           designation ,
   } = req.body;
 
-  // if (!firstName || !lastName  || !dateOfBirth || !state || !district || !pincode || !city || !spokenLanguage || !writtenLanguage || !qualification) {
-  //     return res.status(400).send('Missing required fields');
-  // }
+
 
   try {
       const user = await User.findById(req.user.id);
@@ -70,7 +68,7 @@ router.post('/personaldetails', authenticate, async (req, res) => {
       user.organizationName = organizationName || user.organizationName;
       user.roles = roles || user.roles;
       user.duration = duration || user.duration;
-      user.designation = designation || user.designation;x
+      user.designation = designation || user.designation;
       user.step = 2;
       await user.save();
 

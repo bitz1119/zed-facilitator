@@ -69,7 +69,6 @@ router.post('/details', authenticate, upload.fields([{ name: 'photo' }, { name: 
         user.details=details;
         user.step = 3;
         await user.save();
-
         res.status(200).send('Details updated');
     } catch (err) {
         console.error('An error occurred', err);
