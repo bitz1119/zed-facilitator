@@ -14,7 +14,6 @@ router.post('/personaldetails', authenticate, async (req, res) => {
       firstName,
       middleName,
       lastName,
-      mobileNumber,
       dateOfBirth,
       fatherMotherName,
       state,
@@ -29,9 +28,9 @@ router.post('/personaldetails', authenticate, async (req, res) => {
       qualification
   } = req.body;
 
-  if (!firstName || !lastName || !mobileNumber || !dateOfBirth || !fatherMotherName || !state || !district || !pincode || !city || !spokenLanguage || !writtenLanguage || !qualification) {
-      return res.status(400).send('Missing required fields');
-  }
+  // if (!firstName || !lastName  || !dateOfBirth || !state || !district || !pincode || !city || !spokenLanguage || !writtenLanguage || !qualification) {
+  //     return res.status(400).send('Missing required fields');
+  // }
 
   try {
       const user = await User.findById(req.user.id);
@@ -42,14 +41,14 @@ router.post('/personaldetails', authenticate, async (req, res) => {
       }
 
       // Additional validation checks
-      if (!/^\d{10}$/.test(mobileNumber)) {
-          return res.status(400).send('Invalid mobile number');
-      }
+      // if (!/^\d{10}$/.test(mobileNumber)) {
+      //     return res.status(400).send('Invalid mobile number');
+      // }
 
-      if (!/^\d{6}$/.test(pincode)) {
-          return res.status(400).send('Invalid pincode');
-      }
-      console.log(educationalQualifications);
+      // if (!/^\d{6}$/.test(pincode)) {
+      //     return res.status(400).send('Invalid pincode');
+      // }
+      // console.log(educationalQualifications);
       // Parse JSON fields
       // let parsedEducationalQualifications, parsedWorkExperience, parsedIdProofDetails;
       // try {
@@ -62,27 +61,27 @@ router.post('/personaldetails', authenticate, async (req, res) => {
       // }
 
       // Validate parsed fields
-      if (!Array.isArray(educationalQualifications) || !educationalQualifications.length) {
-          return res.status(400).send('Invalid educational qualifications');
-      }
+      // if (!Array.isArray(educationalQualifications) || !educationalQualifications.length) {
+      //     return res.status(400).send('Invalid educational qualifications');
+      // }
 
-      if (!Array.isArray(workExperience) || !workExperience.length) {
-          return res.status(400).send('Invalid work experience');
-      }
+      // if (!Array.isArray(workExperience) || !workExperience.length) {
+      //     return res.status(400).send('Invalid work experience');
+      // }
 
-      if (!idProofDetails || !idProofDetails.documentType || !idProofDetails.documentNumber || !idProofDetails.nameAsPerDocument) {
-          return res.status(400).send('Invalid ID proof details');
-      }
+      // if (!idProofDetails || !idProofDetails.documentType || !idProofDetails.documentNumber || !idProofDetails.nameAsPerDocument) {
+      //     return res.status(400).send('Invalid ID proof details');
+      // }
 
       // Update user details
       user.details = {
           firstName,
           middleName,
           lastName,
-          mobileNumber,
           dateOfBirth,
           fatherMotherName,
           state,
+          HouseNo : req.body.address,
           district,
           pincode,
           city,

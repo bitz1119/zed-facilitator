@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
     city: { type: String, required: false },
     spokenLanguage: { type: String, required: false },
     writtenLanguage: { type: String, required: false },
+    HouseNo : {type: String, required: false },
     educationalQualifications: [{
         year: { type: String, required: false },
         institution: { type: String, required: false },
