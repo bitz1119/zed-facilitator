@@ -25,6 +25,9 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 app.get('/',(req, res) => {
     res.send("Welcome to Zed Facilitator");
 });
+app.get('/check',authenticate,(req,res)=>{
+    res.send("Working Cookies");
+})
 
 const authRoutes = require('./routes/auth');
 app.use('/api/auth', authRoutes);
