@@ -65,3 +65,6 @@ app.use('/api/questions', QuestionRoutes);
 
 const GetQuestionRoutes = require('./routes/getQuestion');
 app.use('/api/questions', GetQuestionRoutes);
+
+const MarksRoutes = require('./routes/marks');
+app.use('/api/questions', MarksRoutes);

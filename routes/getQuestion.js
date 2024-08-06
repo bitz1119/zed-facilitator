@@ -8,7 +8,7 @@ router.get('/get', async (req, res) => {
   try {
     // Create a new question with the data from the request body
     const ques = await Question.find({});
-
+    
     // Send the created question back to the client
     res.status(201).json(ques);
   } catch (error) {
