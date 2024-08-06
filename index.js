@@ -60,4 +60,8 @@ const logger = require('./utils/logger');
 app.use('/api/certificate', certificateRoutes);
 
 
+const QuestionRoutes = require('./routes/question');
+app.use('/api/questions', QuestionRoutes);
 
+const GetQuestionRoutes = require('./routes/getQuestion');
+app.use('/api/questions', GetQuestionRoutes);
