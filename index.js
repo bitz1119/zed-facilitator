@@ -9,10 +9,10 @@ dotenv.config();
 
 const app = express();
 const corsOptions = {
-    origin: "*", // replace with your frontend domain
+    origin: "http://localhost:3000", // replace with your frontend domain
     credentials: true, // allow credentials (cookies) to be sent
     withCredentials: true
-  };
+};
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
