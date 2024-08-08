@@ -33,6 +33,7 @@ router.post('/personaldetails', authenticate, async (req, res) => {
           roles,
           duration,
           designation ,
+          geeksterPartner,
   } = req.body;
 
 
@@ -69,6 +70,7 @@ router.post('/personaldetails', authenticate, async (req, res) => {
       user.roles = roles || user.roles;
       user.duration = duration || user.duration;
       user.designation = designation || user.designation;
+      user.geeksterPartner = geeksterPartner || user.geeksterPartner;
       user.step = 2;
       await user.save();
 
