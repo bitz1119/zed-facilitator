@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const mime = require('mime-types'); 
 const fs = require('fs');
 const User = require('../models/User');
 const router = express.Router();
@@ -23,11 +24,16 @@ router.post('/upload-certificate', authenticate, upload.single('certificate'), a
         }
 
         logger.info(file);
-
+        const fileContent = fs.readFileSync(file.path);
+        console.log(fileContent)
+        const originalName1 = file.originalname
         const uploadParams = {
             Bucket: process.env.S3_BUCKET,
-            Key: `${user.email}_${user._id}/certificates/${file.filename}`,
-            Body: fs.createReadStream(file.path)
+            Key: `${user.email}_${user._id}/certificates/${originalName1}`,
+            Body: fileContent,
+            ContentType: mime.lookup(file.originalname),
+            ContentDisposition: 'inline',
+
         };
 
         s3.upload(uploadParams, async (err, data) => {

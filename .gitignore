@@ -10,6 +10,5 @@ uploads/
 #logs files
 *.log
 
-zed.pem
 
-deploy.sh
+

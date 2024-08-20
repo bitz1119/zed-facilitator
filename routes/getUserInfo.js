@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/user', async (req, res) => {
   
-  const user = await User.findById(req.user.id).select("-password -details");
+  const user = await User.findById(req.user.id).select("-password");
 
   if (!user) {
       return res.status(404).send('User not found');

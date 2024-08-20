@@ -21,17 +21,21 @@ const userSchema = new mongoose.Schema({
     spokenPrimary: { type: String, required: false },
     writtenPrimary: { type: String, required: false },
     address : {type: String, required: false },
+  
     EqYear: { type: String, required: false },
     SqYear: { type: String, required: false },
-    institution: { type: String, required: false },
-    qualification: { type: String, required: false },
-    documentType: { type: String, required: false },
-    documentNumber: { type: String, required: false },
-    documentName: { type: String, required: false },        
-    designation: { type: String, required: false },
-    organizationName: { type: String, required: false },
-    roles: { type: String, required: false },
-    duration: { type: String, required: false },
+        institution: { type: String, required: false },
+        qualification: { type: String, required: false },
+   
+        documentType: { type: String, required: false },
+        documentNumber: { type: String, required: false },
+        documentName: { type: String, required: false },
+   
+        
+        designation: { type: String, required: false },
+        organizationName: { type: String, required: false },
+        roles: { type: String, required: false },
+        duration: { type: String, required: false },
     
     details: [
             {
@@ -43,7 +47,8 @@ const userSchema = new mongoose.Schema({
     ],
     trainingCompleted: { type: Boolean, default: false },
     marks: Number,
-    certificateURL: String
+    certificateURL: String,
+    Token : String
 });
 
 module.exports = mongoose.model('User', userSchema);

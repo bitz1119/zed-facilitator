@@ -1,4 +1,5 @@
 const express = require('express');
+const mime = require('mime-types'); 
 const router = express.Router();
 const fs = require('fs');
 const multer = require('multer');
@@ -42,12 +43,14 @@ router.post('/details', authenticate, upload.fields([{ name: 'photo' }, { name: 
 
                 // Read file content
                 const fileContent = fs.readFileSync(document.path);
-
+                const originalName = document.originalname
                 // Setting up S3 upload parameters
                 const params = {
                     Bucket: process.env.S3_BUCKET,
-                    Key: `${user.email}_${user._id}/documents/${document.filename}`, // File name you want to save as in S3
-                    Body: fileContent
+                    Key: `${user.email}_${user._id}/documents/${originalName}`, // File name you want to save as in S3
+                    Body: fileContent,
+                    ContentType: mime.lookup(document.originalname),
+                    ContentDisposition: 'inline',
                 };
 
                 // Uploading files to the bucket
@@ -58,13 +61,13 @@ router.post('/details', authenticate, upload.fields([{ name: 'photo' }, { name: 
                 fs.unlinkSync(document.path);
 
                 details.push({
-                    name: document.originalname,
+                    name: document.fieldname,
                     s3Url: data.Location
                 });
                 
             }
         }
-        console.log(details);
+        // console.log(details);
         // Update user details
         user.details=details;
         user.step = 3;

@@ -4,10 +4,12 @@ const dotenv = require('dotenv')
 const authenticate = require('./middleware/authenticate')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
-
+const bodyParser = require('body-parser');
 dotenv.config()
-
 const app = express()
+app.use(express.urlencoded({ extended: true }));
+
+
 // const corsOptions = {
 //     origin: "http://localhost:3000", // replace with your frontend domain
 //     credentials: true, // allow credentials (cookies) to be sent
@@ -63,5 +65,23 @@ app.use('/api/questions', GetQuestionRoutes)
 
 const MarksRoutes = require('./routes/marks')
 app.use('/api/questions', MarksRoutes)
+
+
+const UpdateDetails = require('./routes/updateUserDetails')
+app.use('/api/update', UpdateDetails)
+
+const ResetPasword = require('./routes/resetpassword')
+app.use('/api/password', ResetPasword)
+
+const updatePassword = require('./routes/updatepassword')
+app.use('/api/password', updatePassword)
+
+app.set('view engine', 'ejs');
+
+app.get('/send-email-view', (req, res) => {
+    res.render('sendEmail');
+});
+const AllUser = require('./routes/downloadDetails')
+app.use('/api/download',AllUser)
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
